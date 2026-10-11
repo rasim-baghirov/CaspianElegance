@@ -1,4 +1,4 @@
-// ─── CSRF ────────────────────────────────────────────────────────────────────
+// ─── CSRF ─────────────────────────────────────────────────────
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -14,7 +14,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// ─── ГЛАВНАЯ СТРАНИЦА: обычный toggle ────────────────────────────────────────
+// ─── MAIN PAGE ───────────────────────────────────────────────
 function toggleFav(clickedIcon) {
     if (!clickedIcon.dataset.url) {
         showPopup();
@@ -22,38 +22,31 @@ function toggleFav(clickedIcon) {
     }
 
     const targetUrl = clickedIcon.dataset.url;
-    
-    // Определяем текущее состояние ДО изменения —
-    // если сейчас заполнено, значит пользователь убирает лайк, и наоборот
     const isFilled = clickedIcon.classList.contains('bi-heart-fill');
 
-    // Оптимистичное обновление — меняем иконку МГНОВЕННО, не ждём сервер.
-    // Пользователь видит отклик сразу, без задержки сети
     document.querySelectorAll(`[data-url="${targetUrl}"]`).forEach(icon => {
         if (isFilled) {
-            // Убираем лайк — делаем иконку пустой
             icon.classList.replace('bi-heart-fill', 'bi-heart');
             icon.style.color = 'white';
         } else {
-            // Добавляем лайк — делаем иконку красной
             icon.classList.replace('bi-heart', 'bi-heart-fill');
             icon.style.color = '#ed311c';
         }
     });
 
+    const formData = new FormData();
+    formData.append('on_fav_page', 'false');
+
     fetch(targetUrl, {
         method: 'POST',
-        headers: { 'X-CSRFToken': getCookie('csrftoken') }
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        body: formData
     })
     .then(res => {
-        // Если сервер вернул ошибку — откатываем изменение обратно,
-        // чтобы иконка не врала пользователю
         if (!res.ok) throw new Error('Server error');
         return res.json();
     })
     .then(data => {
-        // Сервер ответил — проверяем что его ответ совпадает с тем,
-        // что мы уже показали пользователю. Если нет — исправляем.
         document.querySelectorAll(`[data-url="${targetUrl}"]`).forEach(icon => {
             if (data.status === 'added') {
                 icon.classList.replace('bi-heart', 'bi-heart-fill');
@@ -65,15 +58,11 @@ function toggleFav(clickedIcon) {
         });
     })
     .catch(() => {
-        // Запрос упал — откатываем иконку к исходному состоянию,
-        // потому что на самом деле ничего не изменилось
         document.querySelectorAll(`[data-url="${targetUrl}"]`).forEach(icon => {
             if (isFilled) {
-                // Было заполнено — возвращаем заполненное
                 icon.classList.replace('bi-heart', 'bi-heart-fill');
                 icon.style.color = '#ed311c';
             } else {
-                // Было пустым — возвращаем пустое
                 icon.classList.replace('bi-heart-fill', 'bi-heart');
                 icon.style.color = 'white';
             }
@@ -81,18 +70,14 @@ function toggleFav(clickedIcon) {
     });
 }
 
-// ─── СТРАНИЦА ИЗБРАННОГО: мгновенный toggle с визуальной отменой ──────────────
+// ─── FAVORITES PAGE ─────────────────────────────────────────
 function toggleFavOnFavPage(heartIcon) {
     const card = heartIcon.closest('.fav-item');
     const url = heartIcon.dataset.url;
-
-    // Запоминаем текущее состояние ДО изменения
     const isFilled = heartIcon.classList.contains('bi-heart-fill');
 
-    // Блокируем кнопку
     heartIcon.style.pointerEvents = 'none';
 
-    // Меняем иконку МГНОВЕННО не дожидаясь сервера
     if (isFilled) {
         card.style.opacity = '0.8';
         card.style.transition = 'opacity 0.3s';
@@ -104,25 +89,27 @@ function toggleFavOnFavPage(heartIcon) {
         heartIcon.style.color = '#e74c3c';
     }
 
+    const formData = new FormData();
+    formData.append('on_fav_page', 'true');
+
     fetch(url, {
         method: 'POST',
-        headers: { 'X-CSRFToken': getCookie('csrftoken') }
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        body: formData
     })
     .then(res => res.json())
     .then(data => {
-        // Если сервер вернул неожиданный результат — исправляем
-        if (data.status === 'removed' && !isFilled) {
+        if (data.status === 'removed') {
             card.style.opacity = '0.8';
             heartIcon.classList.replace('bi-heart-fill', 'bi-heart');
             heartIcon.style.color = '#aaa';
-        } else if (data.status === 'added' && isFilled) {
+        } else if (data.status === 'added') {
             card.style.opacity = '1';
             heartIcon.classList.replace('bi-heart', 'bi-heart-fill');
             heartIcon.style.color = '#e74c3c';
         }
     })
     .catch(() => {
-        // Откат при ошибке — возвращаем исходное состояние
         if (isFilled) {
             card.style.opacity = '1';
             heartIcon.classList.replace('bi-heart', 'bi-heart-fill');
@@ -138,7 +125,7 @@ function toggleFavOnFavPage(heartIcon) {
     });
 }
 
-// ─── ПОПАП ДЛЯ НЕАВТОРИЗОВАННЫХ ─────────────────────────────────────────────
+// ─── POPUP FOR UNAUTHENTICATED USERS ─────────────────────────────────────
 function showPopup() {
     document.getElementById('fav-popup').style.display = 'block';
     document.getElementById('fav-overlay').style.display = 'block';

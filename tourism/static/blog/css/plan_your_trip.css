@@ -140,27 +140,6 @@
   border-radius: 0.25rem;
 }
 
-/* Badge colors */
-.private-tour {
-  background-color: #9a2925;
-  color: white;
-}
-
-.group-tour {
-  background-color: #343b7b;
-  color: white;
-}
-
-.adventure-tour {
-  background-color: #165703;
-  color: white;
-}
-
-.cultural-tour {
-  background-color: #9a2925;
-  color: white;
-}
-
 /* Button styling for better visibility on dark background */
 .tour-card .btn-outline-secondary {
   color: white;

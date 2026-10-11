@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CarouselItem, Tab, Attraction, AttractionTab, Badge, Tour
+from .models import CarouselItem, Tab, Badge, Attraction, AttractionTab, TourBadge, Tour
 
 @admin.register(CarouselItem)
 class CarouselItemAdmin(admin.ModelAdmin):
@@ -25,7 +25,6 @@ class AttractionTabInline(admin.TabularInline):
     extra = 1
     fields = ['tab', 'column', 'order']
 
-
 @admin.register(Attraction)
 class AttractionAdmin(admin.ModelAdmin):
     inlines = [AttractionTabInline]
@@ -37,6 +36,11 @@ class AttractionAdmin(admin.ModelAdmin):
     def get_tabs(self, obj):
         return ", ".join([t.name for t in obj.tabs.all()])
     get_tabs.short_description = 'Tabs'
+
+@admin.register(TourBadge)
+class TourBadgeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'color']
+    prepopulated_fields = {'slug': ('name',)}
 
 @admin.register(Tour)
 class TourAdmin(admin.ModelAdmin):

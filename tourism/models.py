@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from colorfield.fields import ColorField
+from django.utils.text import slugify
 
 # Create your models here.
 class CarouselItem(models.Model):
@@ -41,7 +42,7 @@ class Tab(models.Model):
         return self.name
 
 class Badge(models.Model):
-    name = models.CharField(max_length=100) 
+    name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     color = ColorField(default='#5d646b')
 
@@ -51,8 +52,6 @@ class Badge(models.Model):
 
     def __str__(self):
         return self.name
-
-from django.utils.text import slugify
 
 def attraction_upload_path(instance, filename):
     return f'attractions/{slugify(instance.name)}/{filename}'
@@ -100,16 +99,32 @@ class AttractionTab(models.Model):
     def __str__(self):
         return f"{self.attraction.name} → {self.tab.name}"
 
+class TourBadge(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    color = ColorField(default='#5d646b')
+
+    class Meta:
+        verbose_name = 'Tour Badge'
+        verbose_name_plural = 'Badges (Tours/Plan your trip)'
+
+    def __str__(self):
+        return self.name
+
 class Tour(models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=300)
-    image = models.ImageField(
-    upload_to='tours/',
-    null=True,
-    blank=True,
-)
+    image = models.ImageField(upload_to='tours/', null=True, blank=True)
     nights = models.PositiveIntegerField()
+    days = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=0)
+    badge = models.ForeignKey(
+        TourBadge,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='tours'
+    )
     order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
@@ -151,6 +166,8 @@ class Favourite(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Favourites'
