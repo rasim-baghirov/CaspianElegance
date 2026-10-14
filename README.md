@@ -15,13 +15,13 @@ A Django web application for exploring Azerbaijan: travel destinations, cities, 
   </tr>
   <tr>
     <td width="33%">
-      <video src="https://raw.githubusercontent.com/rasim-baghirov/CaspianElegance/main/screenshots/home.mp4" width="100%" controls autoplay loop muted></video>
+      <video src="https://github.com/user-attachments/assets/42bd139f-6cc7-4f15-b10e-a638e003e353" width="100%" controls muted loop></video>
     </td>
     <td width="33%">
-      <video src="https://raw.githubusercontent.com/rasim-baghirov/CaspianElegance/main/screenshots/planyourtrip.mp4" width="100%" controls autoplay loop muted></video>
+      <video src="https://github.com/user-attachments/assets/6a524fef-3aea-4907-882a-20085db0c2b3" width="100%" controls muted loop></video>
     </td>
     <td width="33%">
-      <video src="https://raw.githubusercontent.com/rasim-baghirov/CaspianElegance/main/screenshots/favourites.mp4" width="100%" controls autoplay loop muted></video>
+      <video src="https://github.com/user-attachments/assets/dcf56f0d-665f-4299-9353-dcde4f68c88c" width="100%" controls muted loop></video>
     </td>
   </tr>
 </table>
