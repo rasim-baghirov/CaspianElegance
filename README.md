@@ -14,14 +14,14 @@ A Django web application for exploring Azerbaijan: travel destinations, cities, 
     <th>Favourites</th>
   </tr>
   <tr>
-    <td>
-      <video src="screenshots/home.mp4" width="100%" controls autoplay loop muted></video>
+    <td width="33%">
+      <video src="https://raw.githubusercontent.com/rasim-baghirov/CaspianElegance/main/screenshots/home.mp4" width="100%" controls autoplay loop muted></video>
     </td>
-    <td>
-      <video src="screenshots/planyourtrip.mp4" width="100%" controls autoplay loop muted></video>
+    <td width="33%">
+      <video src="https://raw.githubusercontent.com/rasim-baghirov/CaspianElegance/main/screenshots/planyourtrip.mp4" width="100%" controls autoplay loop muted></video>
     </td>
-    <td>
-      <video src="screenshots/favourites.mp4" width="100%" controls autoplay loop muted></video>
+    <td width="33%">
+      <video src="https://raw.githubusercontent.com/rasim-baghirov/CaspianElegance/main/screenshots/favourites.mp4" width="100%" controls autoplay loop muted></video>
     </td>
   </tr>
 </table>
