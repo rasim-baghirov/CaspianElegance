@@ -7,10 +7,24 @@ A Django web application for exploring Azerbaijan: travel destinations, cities, 
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 ## 📸 Screenshots
-
-| Home Page | Plan Your Trip | Favourites |
-|-----------|----------------|------------|
-| ![home](screenshots/home.mp4) | ![planyourtrip](screenshots/planyourtrip.mp4) | ![favourites](screenshots/favourites.mp4) |
+<table>
+  <tr>
+    <th>Home Page</th>
+    <th>Plan Your Trip</th>
+    <th>Favourites</th>
+  </tr>
+  <tr>
+    <td>
+      <video src="screenshots/home.mp4" width="100%" controls autoplay loop muted></video>
+    </td>
+    <td>
+      <video src="screenshots/planyourtrip.mp4" width="100%" controls autoplay loop muted></video>
+    </td>
+    <td>
+      <video src="screenshots/favourites.mp4" width="100%" controls autoplay loop muted></video>
+    </td>
+  </tr>
+</table>
 
 ## ⚙️ Tech Stack
 
